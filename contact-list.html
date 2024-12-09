@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Contact List</h1>
+        <div id="savedContactMessage" class="message"></div>
+        <div id="contactList"></div>
+        <button id="backBtn" class="back-button">Back to Add Contact</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedContactMessage = document.getElementById('savedContactMessage');
+            const contactList = document.getElementById('contactList');
+            const backBtn = document.getElementById('backBtn');
+
+            // Check for saved contact in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const savedContactParam = urlParams.get('savedContact');
+
+            if (savedContactParam) {
+                try {
+                    const savedContact = JSON.parse(savedContactParam);
+                    savedContactMessage.textContent = `New contact saved: ${savedContact.name}`;
+                    savedContactMessage.className = 'message success';
+
+                    // Display contact details
+                    const contactDetails = document.createElement('div');
+                    contactDetails.innerHTML = `
+                        <p><strong>Name:</strong> ${savedContact.name}</p>
+                        <p><strong>Phone:</strong> ${savedContact.phone}</p>
+                        <p><strong>Email:</strong> ${savedContact.email}</p>
+                    `;
+                    contactList.appendChild(contactDetails);
+                } catch (error) {
+                    console.error('Error parsing saved contact:', error);
+                }
+            }
+
+            // Back button functionality
+            backBtn.addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+
+</html>
